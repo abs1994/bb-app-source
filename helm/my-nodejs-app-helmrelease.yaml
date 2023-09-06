@@ -1,0 +1,18 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: my-nodejs-app
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: ./charts/my-nodejs-app
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      values:
+        image:
+          repository: my-ecr-repo/my-nodejs-app
+          tag: {{ .Values.image.ContainerTag }}  # Use the ContainerTag value from the Helm values
